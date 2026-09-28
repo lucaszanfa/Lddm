@@ -32,11 +32,6 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
-**/build/
-**/coverage/
-**/.gradle/
-**/local.properties
-**/ephemeral/
 
 # Symbolication related
 app.*.symbols

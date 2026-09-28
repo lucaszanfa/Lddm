@@ -1,17 +1,29 @@
-# flutter_application_1
+# LDDM — Atividades práticas
 
-A new Flutter project.
+Repositório das atividades Flutter do Diário de Hábitos.
 
-## Getting Started
+| Atividade | Projeto | Documento |
+| --- | --- | --- |
+| Check 2 | [atividades/check-2](atividades/check-2) | Versão anterior à separação em camadas |
+| Prática 3 | [atividades/pratica-3](atividades/pratica-3) | [Requisitos e mapeamento](atividades/pratica-3/ATIVIDADE_PRATICA_3.md) |
 
-This project is a starting point for a Flutter application.
+Cada pasta de atividade é um projeto Flutter independente. Abra a pasta desejada no editor e execute nela:
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+flutter pub get
+flutter run
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Para verificar o projeto, execute `flutter analyze` e `flutter test` na mesma pasta.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Prática 3
+
+- `lib/ui/`: telas e apresentação.
+- `lib/dominio/`: modelo, validação e estado dos hábitos.
+- `lib/dados/`: repositório em memória.
+- `lib/main.dart`: inicialização e composição do aplicativo.
+- `test/`: testes automatizados.
+
+Para o envio solicitado apenas em Dart, envie todos os arquivos `.dart` de `atividades/pratica-3/lib/`, preservando suas subpastas. O documento Markdown deve estar disponível para a conferência em aula junto do projeto.
+
+O armazenamento da Prática 3 é em memória: os hábitos duram somente durante a execução do aplicativo.
