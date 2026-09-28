@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'habitos_store.dart';
+import 'tela_detalhe_habito.dart';
 import 'tela_novo_habito.dart';
 
 class TelaHabitos extends StatelessWidget {
   const TelaHabitos({super.key});
+
   @override
   Widget build(BuildContext context) {
     final habitos = context.watch<HabitosStore>().habitos;
@@ -15,16 +17,22 @@ class TelaHabitos extends StatelessWidget {
           ? const Center(child: Text('Nenhum hábito cadastrado.'))
           : ListView.builder(
               itemCount: habitos.length,
-              itemBuilder: (context, indice) => ListTile(
-                title: Text(habitos[indice].nome),
-                subtitle: Text(habitos[indice].meta),
-                trailing: IconButton(
-                  tooltip: 'Remover hábito',
-                  icon: const Icon(Icons.delete_outline),
-                  onPressed: () =>
-                      context.read<HabitosStore>().removerEm(indice),
-                ),
-              ),
+              itemBuilder: (context, indice) {
+                final habito = habitos[indice];
+                return ListTile(
+                  title: Text(habito.nome),
+                  subtitle: Text(habito.meta),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => TelaDetalheHabito(habito: habito),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Novo hábito',

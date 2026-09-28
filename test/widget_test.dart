@@ -11,47 +11,46 @@ void main() {
     addTearDown(loja.dispose);
     var notificacoes = 0;
     loja.addListener(() => notificacoes++);
-    const habito = Habito(nome: 'Ler', meta: '20 páginas');
-    loja.adicionar(habito);
-    loja.adicionar(habito);
+    const primeiro = Habito(nome: 'Ler', meta: '20 páginas');
+    const segundo = Habito(nome: 'Ler', meta: '30 páginas');
+    loja.adicionar(primeiro);
+    loja.adicionar(segundo);
     expect(() => loja.habitos.clear(), throwsUnsupportedError);
-    loja.removerEm(1);
-    expect(loja.habitos, [habito]);
+    loja.remover(segundo);
+    expect(loja.habitos, [primeiro]);
     expect(notificacoes, 3);
   });
 
-  testWidgets('Cadastro e remoção atualizam lista e resumo', (tester) async {
+  testWidgets('Detalhes mostram o item tocado e exclusão atualiza lista e resumo',
+      (tester) async {
     await tester.pumpWidget(
       ChangeNotifierProvider(
-        create: (_) => HabitosStore(),
+        create: (_) => HabitosStore()
+          ..adicionar(const Habito(nome: 'Ler', meta: '20 páginas'))
+          ..adicionar(const Habito(nome: 'Caminhar', meta: '30 minutos')),
         child: const DiarioApp(),
       ),
     );
-    await tester.tap(find.text('Resumo'));
+
+    await tester.tap(find.text('Caminhar'));
     await tester.pumpAndSettle();
-    expect(find.text('0 hábitos cadastrados'), findsOneWidget);
-    await tester.tap(find.text('Hábitos'));
+    expect(find.text('Nome: Caminhar'), findsOneWidget);
+    expect(find.text('Meta: 30 minutos'), findsOneWidget);
+    expect(find.text('Meta: 20 páginas'), findsNothing);
+
+    await tester.pageBack();
     await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.text('Caminhar'), findsOneWidget);
+
+    await tester.tap(find.text('Caminhar'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Salvar'));
+    await tester.tap(find.text('Excluir'));
     await tester.pumpAndSettle();
-    expect(find.text('Informe o nome do hábito.'), findsOneWidget);
-    await tester.enterText(find.byType(TextFormField).at(0), 'Ler');
-    await tester.enterText(find.byType(TextFormField).at(1), '20 páginas');
-    await tester.tap(find.text('Salvar'));
-    await tester.pumpAndSettle();
+    expect(find.text('Caminhar'), findsNothing);
     expect(find.text('Ler'), findsOneWidget);
+
     await tester.tap(find.text('Resumo'));
     await tester.pumpAndSettle();
     expect(find.text('1 hábito cadastrado'), findsOneWidget);
-    await tester.tap(find.text('Hábitos'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Remover hábito'));
-    await tester.pumpAndSettle();
-    expect(find.text('Nenhum hábito cadastrado.'), findsOneWidget);
-    await tester.tap(find.text('Resumo'));
-    await tester.pumpAndSettle();
-    expect(find.text('0 hábitos cadastrados'), findsOneWidget);
   });
 }
